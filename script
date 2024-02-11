@@ -1,0 +1,104 @@
+.#!/bin/bash
+
+select var in "Add user" "Get user details" "Delete user but keeping data" "Delete user with all data" "Lock user account" "Unlock user account" "Disable user account" "Add group" "Delete group" "Modify group (Add users to group)" "Modiffy group (Delete users from group)" "Press 12 to exit the menu: "
+do
+case $var in
+
+#choise1
+"Add user" )                                      echo "Please enter num users: " ; 
+                                                  read users    ;
+                                                  echo "Please enter first name: " ; 
+						  read first_name         ;
+                                                  echo "Please enter last name: " ; 
+						  read last_name        ;
+                                                  echo "Please enter output file: " ; 
+						  read file    ;
+if [[ $users == *[[:digit:]]* ]] ; then
+   for i in $(seq 1 $users)       ; do
+   username="${first_name}${last_name}$RANDOM"
+   useradd $usernam
+   pass=$RANDOM
+   echo $pass | passwd --stdin $username
+   echo "$username:$pass" >> $file
+   done 
+fi
+                                                 echo "Users are added , successfuly"                                  ;;
+
+
+
+"Get user details" )                              echo ">>Enter username u want to get details: "          ;
+                                                  read logname ;                                   
+                                                  echo ">>enter the log name : " ; 
+                                                  cat /etc/passwd | grep -i $logname ;              
+                                                  echo ">>list their home directory: " ;
+                                                  ls -R /home/$logname ;
+                                                  echo ">>cuurent process of their: "            ;
+                                                  ps -aux | grep -i $logname ;
+                                                  echo ">>Those are all details."                         ;;
+
+
+
+"Delete user with but keeping data" )             
+	                                      echo "Enter username you want to delete but keeping data: " ;
+                                              read sudo userdel $udel ;                  
+                                              echo " user $udel is deleted."                    ;;
+
+
+
+
+"Delete user with all data" )                    
+                                       	echo "Enter username you want to delete all data: "         ;
+                                        read sudo userdel -r $udel1 ;              
+					echo ">>User $udel1 is deleted and all their data."        ;;
+
+
+
+
+"Lock user account" )                             echo "Enter username you want lock: "                 ;
+
+	                                          read sudo password -l $usertolock ;            
+	                                          echo ">>User $usertolock is locked."                       ;;
+
+
+
+
+"Unlock user account" )                           echo "Enter username you want unlock: "               ;
+                                                  read sudo password -l $usertounlok ;        
+						  echo ">>User $usertunlok is unlocked."                    ;;
+
+
+
+"Disable user account" )                          echo "Enter username uou want to disable all their services: "     ;
+                                                   read sudo chage -E 0 $userdis ;               
+                                                   echo ">>User $userdis is disabled."                               ;;
+
+
+
+#choice8
+"Add group" )                                     echo "Enter group name you want add: "                ;
+read gadd; sudo groupadd $gadd ;                  echo ">>Group $gadd is added."                       ;;
+
+
+
+#choice9
+"Delete group" )                                  echo "Enter group name you want delete: "             ;
+read gdel; sudo groupdel $gdel ;                  echo ">>Group $gdel is deleted."                     ;;
+
+
+
+#choice10
+"Modify group (Add users to group)" )             echo ">>Enter group name you want to add users to: "             ;
+read gmod;                                        echo ">>Enter user name you want to add to group $gmod: "        ;
+read usr; sudo usermod -G  $gmod $usr ;           echo ">>User $usr added to group $gmod."                       ;;
+
+
+
+#choice11
+"Modify group (Delete users from group)" )        echo ">>Enter group name you want to delete users from: "        ;
+read gmod1;                                       echo ">>Enter user name you want to delete from group $gmod1: "  ;
+read usr1; sudo groupmems -g $gmod1 -d $usr1 ;    echo ">>User $usr1 deleted from group $gmod1."                  ;;
+
+
+"Press 12 to exit the menu: " )                   echo "Thank you, exiting ........" ; exit   ;;
+esac
+done
